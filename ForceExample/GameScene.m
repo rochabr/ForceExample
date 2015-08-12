@@ -11,35 +11,37 @@
 @implementation GameScene
 
 -(void)didMoveToView:(SKView *)view {
-    /* Setup your scene here */
-    SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    self.backgroundColor = [SKColor colorWithRed:0.29 green:0.75 blue:0.99 alpha:1];
     
-    myLabel.text = @"Hello, World!";
-    myLabel.fontSize = 65;
-    myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
-                                   CGRectGetMidY(self.frame));
+    //creating the platform
+    SKSpriteNode *platform = [SKSpriteNode spriteNodeWithColor:[SKColor brownColor] size:CGSizeMake(100, 20)];
+    platform.position = CGPointMake(50, 100);
     
-    [self addChild:myLabel];
+    //adding the platform to the scene
+    [self addChild:platform];
+    
+    //creating first action
+    SKAction *move = [SKAction moveByX:self.size.width-platform.size.width y:0 duration:2];
+    
+    //creating reversed action
+    SKAction *moveBack = [move reversedAction];
+    
+    //creating the wait period
+    SKAction *wait = [SKAction waitForDuration:1.5];
+    
+    //stacking up actions
+    SKAction *backAndForth = [SKAction sequence:@[move, wait, moveBack, wait]];
+    
+    //creating the repeater
+    SKAction *repeater = [SKAction repeatActionForever:backAndForth];
+    
+    //running the actions
+    [platform runAction:repeater];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
     
-    for (UITouch *touch in touches) {
-        CGPoint location = [touch locationInNode:self];
-        
-        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Spaceship"];
-        
-        sprite.xScale = 0.5;
-        sprite.yScale = 0.5;
-        sprite.position = location;
-        
-        SKAction *action = [SKAction rotateByAngle:M_PI duration:1];
-        
-        [sprite runAction:[SKAction repeatActionForever:action]];
-        
-        [self addChild:sprite];
-    }
 }
 
 -(void)update:(CFTimeInterval)currentTime {

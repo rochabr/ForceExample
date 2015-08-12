@@ -42,12 +42,15 @@
     skView.ignoresSiblingOrder = YES;
     
     // Create and configure the scene.
-    GameScene *scene = [GameScene unarchiveFromFile:@"GameScene"];
+    //GameScene *scene = [GameScene unarchiveFromFile:@"GameScene"];
+    //scene.scaleMode = SKSceneScaleModeAspectFill;
+    
+    // Create and configure the scene.
+    SKScene * scene = [GameScene sceneWithSize:skView.bounds.size];
     scene.scaleMode = SKSceneScaleModeAspectFill;
     
     // Present the scene.
-    [skView presentScene:scene];
-}
+    [skView presentScene:scene];}
 
 - (BOOL)shouldAutorotate
 {
